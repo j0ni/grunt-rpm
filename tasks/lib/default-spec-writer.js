@@ -60,6 +60,9 @@ function formatLabeledList(label, list) {
 function formatFileList(options) {
   var str = '';
 
+  console.log('in formatFileList');
+  console.log(options.files.length);
+
   if (options.files && options.files.length > 0) {
 
 	str += '\n%files\n';
