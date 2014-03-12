@@ -153,7 +153,7 @@ function writeSpecFile(grunt, options, filesToPack) {
 
 /**
  * Execute rpmbuild as child process passing in the specific details for building this rpm.<br><br>
- * <code>rpmbuild -bb --target noarch --buildroot '/path/to/destination/tmp' --define='_topdir /path/to/destination' '/path/to/destination/SPECS/project.spec'</code>
+ * <code>rpmbuild -bb --target noarch --buildroot '/path/to/destination/tmp' /path/to/destination' '/path/to/destination/SPECS/project.spec'</code>
  *
  * @param {Grunt} grunt - the grunt instance.
  * @param {String} buildPath - relative path to the destination folder
@@ -168,20 +168,15 @@ function spawnRpmbuild(grunt, buildPath, options) {
 	// configurable as well as targetVendor and targetOs --target
 	// noarch-redhat-linux
 	var buildroot = path.join(process.cwd(), buildPath);
-    //		var topdir = path.join(process.cwd(), options.destination);
 	var specfile = path.join(process.cwd(), options.specFilepath);
 	var target = 'noarch';
 
-	// FIXME the --define command line parameter is not taken into
-	// account by rpmbuild so a macro definition must be specified in
-	// the spec file
 	var rpmbuildOptions = {
 	  cmd: 'rpmbuild',
 	  args: [
         '-bb',
         '--target', target,
         '--buildroot', buildroot,
-        /*'--define=\'_topdir ' + topdir + '\'',*/
         specfile
       ]
 	};
@@ -211,6 +206,7 @@ function createRpmMultiTask(grunt) {
 	});
 
     console.log('options: ', util.inspect(options));
+    console.log('files: ', util.inspect(this.files));
 
 	// Create the folder structure needed by rpmbuild.
 	grunt.file['delete'](options.destination);
