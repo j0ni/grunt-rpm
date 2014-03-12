@@ -60,9 +60,6 @@ function formatLabeledList(label, list) {
 function formatFileList(options) {
   var str = '';
 
-  console.log('in formatFileList');
-  console.log(options.files.length);
-
   if (options.files && options.files.length > 0) {
 
 	str += '\n%files\n';
@@ -76,7 +73,6 @@ function formatFileList(options) {
 	}
 
 	for (var i in options.files) {
-      console.log(i);
 	  var rpmFile = options.files[i];
       //			if (!rpmFile.noRecursion) {
 	  if (rpmFile.filemode || rpmFile.username || rpmFile.groupname) {
@@ -87,9 +83,6 @@ function formatFileList(options) {
 	  }
 
 	  str += '"' + unixifyPath(path.join(path.sep, rpmFile.dest, rpmFile.path)) + '"\n';
-      //			} else {
-      //				str += '%dir "' + unixifyPath(path.join(path.sep, rpmFile.dest + rpmFile.path)) + '"\n';
-      //			}
 	}
   }
 

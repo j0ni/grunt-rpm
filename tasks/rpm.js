@@ -10,6 +10,7 @@
 var path = require('path');
 var fs = require('fs.extra');
 var spec = require('./lib/default-spec-writer');
+var util = require('util');
 
 var tmpFolder = 'tmp';
 var specFolder = 'SPECS';
@@ -30,6 +31,8 @@ function filterFiles(grunt, files) {
 
   files.forEach(function (fileMapping) {
 
+    console.log('got a file mapping: ' + util.inspect(fileMapping));
+
 	// Fail if there is no dest field defined
 	if (!fileMapping.dest) {
 	  grunt.warn('No destination folder is defined for source "%s"', fileMapping.src);
@@ -42,12 +45,14 @@ function filterFiles(grunt, files) {
 	// Evaluate specified source files to determine what to do in each case
 	fileMapping.src.forEach(function (filepath) {
 
+      console.log('got a filepath: ' + filepath);
+
 	  // Warn on invalid source files (if nonull was set).
 	  if (!grunt.file.exists(filepath)) {
-		grunt.log.warn('Source file "' + filepath + '" does not exists');
+		grunt.log.warn('Source file "%s" does not exist', filepath);
 	  } else if (grunt.file.isLink(filepath)) {
 		// TODO handle links
-		grunt.log.warn('Source file "' + filepath + '" is a link and it not supported yet');
+		grunt.log.warn('Source file "%s" is a link and not supported yet', filepath);
 	  } else {
 
 		var fileConfig = grunt.util._.omit(fileMapping, 'src', 'orig', 'filter');
@@ -204,6 +209,8 @@ function createRpmMultiTask(grunt) {
 	var options = this.options({
 	  destination: 'rpm'
 	});
+
+    console.log('options: ', util.inspect(options));
 
 	// Create the folder structure needed by rpmbuild.
 	grunt.file['delete'](options.destination);
